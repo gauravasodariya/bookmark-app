@@ -14,7 +14,7 @@ const bodyFont = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "BookMark - Save Your Favorite Links",
+  title: "BookMark",
   description: "A simple bookmark manager with real-time synchronization",
 };
 
