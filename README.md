@@ -135,37 +135,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 5. **Delete Bookmarks**: Click the "Delete" button to remove a bookmark
 6. **Sign Out**: Click the "Logout" button in the header
 
-## Deployment to Vercel
-
-### 1. Push to GitHub
-
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/yourusername/bookmark-app.git
-git push -u origin main
-```
-
-### 2. Deploy to Vercel
-
-1. Go to [Vercel](https://vercel.com) and sign in
-2. Click "Add New → Project"
-3. Select your GitHub repository
-4. Add environment variables:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-5. Click "Deploy"
-
-### 3. Update Google OAuth Redirect URI
-
-In Google Cloud Console, add your Vercel URL as an authorized redirect URI:
-- `https://your-vercel-app.vercel.app/auth/callback`
-
-In Supabase, update your site URL:
-- Project Settings → Configuration → Site URL: `https://your-vercel-app.vercel.app`
-
 ## Project Structure
 
 ```
@@ -193,119 +162,9 @@ bookmark-app/
 └── package.json                  # Project dependencies
 ```
 
-## Problems & Solutions
 
-### Problem 1: "User does not have permission" error
-**Cause**: Row Level Security (RLS) policies not properly configured.
+Made with Gaurav ♥️
 
-**Solution**: 
-- Ensure all RLS policies are created correctly
-- Check that `auth.uid()` matches the user ID in your bookmarks table
-- Go to Supabase SQL Editor and re-run the RLS policy section
-
-### Problem 2: Real-time updates not working
-**Cause**: Realtime not enabled on the bookmarks table.
-
-**Solution**:
-- Ensure the table has Realtime enabled with: `ALTER PUBLICATION supabase_realtime ADD TABLE bookmarks;`
-- Verify subscription in code is listening to the correct channel and filter
-
-### Problem 3: Google OAuth redirect fails
-**Cause**: Redirect URI not configured correctly.
-
-**Solution**:
-- Verify in Google Cloud Console that all redirect URIs are added:
-  - Local: `http://localhost:3000/auth/callback`
-  - Production: `https://your-vercel-app.vercel.app/auth/callback`
-  - Supabase: `https://YOUR_PROJECT_ID.supabase.co/auth/v1/callback`
-- Clear browser cache and cookies
-- Try in an incognito window
-
-### Problem 4: Bookmarks not appearing after adding
-**Cause**: Database not synced or form not triggering refresh.
-
-**Solution**:
-- Check browser console for errors
-- Verify you're logged in with a valid user
-- Check Supabase database directly to see if bookmark was inserted
-- Ensure RLS policies allow reading your own bookmarks
-
-### Problem 5: CORS errors
-**Cause**: Supabase URL or keys incorrect.
-
-**Solution**:
-- Double-check environment variables are correct
-- Environment variables should be in `.env.local` file
-- Restart the development server after changing `.env.local`
-
-### Problem 6: Can't see other users' bookmarks (expected behavior)
-**This is a feature, not a bug!** RLS policies ensure only you can see your own bookmarks.
-
-- User A's bookmarks are completely private from User B
-- This is handled automatically by Supabase's RLS policies
-- Each user only queries their own `user_id`
-
-## Performance Optimization
-
-- **Real-time subscriptions**: Only subscribe to user-specific bookmarks (filtered by `user_id`)
-- **Database indexes**: Created on `user_id` and `created_at` for fast queries
-- **Lazy loading**: Bookmarks only loaded when user views dashboard
-- **Image optimization**: Next.js automatic image optimization
-
-## Security Features
-
-🔐 **OAuth Only**: No passwords to compromise
-🔒 **RLS Policies**: Database-level access control
-🛡️ **HTTPS**: All communication encrypted
-🔑 **Secrets**: Never exposed in frontend code
-👤 **User Privacy**: Each user's data completely isolated
-
-## Troubleshooting
-
-### Local Development Issues
-
-**Issue**: Port 3000 already in use
-```bash
-# Kill the process or use a different port
-npm run dev -- -p 3001
-```
-
-**Issue**: Module not found errors
-```bash
-# Clear node_modules and reinstall
-rm -r node_modules
-npm install
-```
-
-**Issue**: TypeScript errors
-```bash
-# Ensure all dependencies are installed and types are correct
-npm install
-npm run build
-```
-
-### Browser Issues
-
-- Try clearing browser cache and cookies
-- Use an incognito window
-- Check that cookies are enabled
-- Disable browser extensions temporarily
-
-## Contributing
-
-This is a personal project, but feel free to fork and modify for your own use!
-
-## License
-
-MIT License - feel free to use this project however you'd like.
-
-## Support & Questions
-
-For issues or questions:
-1. Check the Problems & Solutions section above
-2. Review the code comments
-3. Check Supabase documentation: https://supabase.com/docs
-4. Check Next.js documentation: https://nextjs.org/docs
 
 ---
 
