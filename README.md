@@ -2,6 +2,8 @@
 
 A modern, real-time bookmark manager built with Next.js, Supabase, and Tailwind CSS. Save your favorite links securely and access them anywhere with real-time synchronization across devices.
 
+**Live Demo**: https://bookmark-app-beige-rho.vercel.app/
+
 ## Features
 
 ✨ **Google OAuth Authentication** - Sign in with your Google account (no email/password needed)  
@@ -69,25 +71,20 @@ CREATE TABLE bookmarks (
 CREATE INDEX idx_bookmarks_user_id ON bookmarks(user_id);
 CREATE INDEX idx_bookmarks_created_at ON bookmarks(created_at DESC);
 
--- Enable RLS (Row Level Security)
 ALTER TABLE bookmarks ENABLE ROW LEVEL SECURITY;
 
--- Create RLS policy: Users can only see their own bookmarks
 CREATE POLICY "Users can view their own bookmarks"
   ON bookmarks FOR SELECT
   USING (auth.uid() = user_id);
 
--- Create RLS policy: Users can insert their own bookmarks
 CREATE POLICY "Users can insert their own bookmarks"
   ON bookmarks FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
--- Create RLS policy: Users can delete their own bookmarks
 CREATE POLICY "Users can delete their own bookmarks"
   ON bookmarks FOR DELETE
   USING (auth.uid() = user_id);
 
--- Enable Realtime for the bookmarks table
 ALTER PUBLICATION supabase_realtime ADD TABLE bookmarks;
 ```
 
@@ -164,11 +161,5 @@ bookmark-app/
 
 
 Made with Gaurav ♥️
-
-
 ---
 
-**Built with ❤️ using Next.js + Supabase**
-
-**Live Demo**: https://your-vercel-app.vercel.app  
-**GitHub Repository**: https://github.com/yourusername/bookmark-app
