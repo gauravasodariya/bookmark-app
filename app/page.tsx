@@ -1,6 +1,7 @@
 'use client';
 
 import { supabase } from '@/lib/supabase';
+import Image from 'next/image';
 import LoginButton from './components/LoginButton';
 import ThemeToggle from './components/ThemeToggle';
 import { useEffect, useState } from 'react';
@@ -44,8 +45,15 @@ export default function Home() {
     <div className="min-h-screen px-6 py-10">
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="surface-card flex h-11 w-11 items-center justify-center rounded-2xl text-2xl">
-            📑
+          <div className="surface-card flex h-11 w-11 items-center justify-center rounded-full">
+            <Image
+              src="/logo.jpg"
+              alt="BookMark logo"
+              width={36}
+              height={36}
+              className="h-9 w-9 rounded-full object-cover"
+              priority
+            />
           </div>
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-muted">BookMark</p>
@@ -68,7 +76,7 @@ export default function Home() {
           </p>
         </section>
 
-        <section className="surface-card rounded-3xl p-6 sm:p-8">
+        <section className="surface-card rounded-3xl p-4 sm:p-6">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm text-muted">Sign in to continue</p>

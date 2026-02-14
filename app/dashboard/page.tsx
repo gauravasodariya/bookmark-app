@@ -1,6 +1,7 @@
 'use client';
 
 import { supabase } from '@/lib/supabase';
+import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AddBookmark from '../components/AddBookmark';
@@ -70,8 +71,15 @@ export default function Dashboard() {
     <div className="min-h-screen px-6 py-8">
       <header className="mx-auto flex w-full max-w-6xl flex-col gap-6 rounded-3xl border border-[color:var(--border)] bg-[color:var(--surface)]/80 p-6 shadow-sm backdrop-blur sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-4">
-          <div className="surface-card flex h-12 w-12 items-center justify-center rounded-2xl text-2xl">
-            📑
+          <div className="surface-card flex h-12 w-12 items-center justify-center rounded-2xl">
+            <Image
+              src="/logo.jpg"
+              alt="BookMark logo"
+              width={40}
+              height={40}
+              className="h-10 w-10 object-contain"
+              priority
+            />
           </div>
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-muted">Dashboard</p>
