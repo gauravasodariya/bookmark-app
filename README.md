@@ -158,6 +158,47 @@ bookmark-app/
 ├── tsconfig.json                 # TypeScript configuration
 └── package.json                  # Project dependencies
 ```
+## Challenges & Solutions
+### 1. OAuth Redirect Issues in Production
+
+**Problem**: After deploying to Vercel, Google OAuth was redirecting users to `localhost:3000` instead of the production domain, causing authentication to fail.
+
+**Solution**: 
+- Added the production Vercel URL to Supabase's allowed redirect URLs in Authentication → URL Configuration
+- Updated the redirect URLs to include both:
+  - `http://localhost:3000/auth/callback` (for development)
+  - `https://bookmark-app-beige-rho.vercel.app/auth/callback` (for production)
+- Set the Site URL in Supabase to the production domain
+- Ensured environment variables were properly configured in Vercel
+
+### 2. Real-Time Synchronization Not Working
+
+**Problem**: Changes made in one tab weren't appearing in other tabs in real-time.
+
+**Solution**:
+- Enabled Realtime for the bookmarks table in Supabase using:
+  ```sql
+  ALTER PUBLICATION supabase_realtime ADD TABLE bookmarks;
+  ```
+- Implemented proper Supabase channel subscriptions in `BookmarkList.tsx` with cleanup:
+  ```javascript
+  const channel = supabase
+    .channel('bookmarks-changes')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'bookmarks' }, handleRealtimeUpdate)
+    .subscribe();
+  
+  return () => { supabase.removeChannel(channel); };
+  ```
+
+### 4. Authentication State Management
+
+**Problem**: Users experienced flashing content when refreshing the page, showing the login screen briefly before redirecting to the dashboard.
+
+**Solution**: 
+- Added a loading state that displays while checking authentication
+- Used `useEffect` to check auth status on mount
+- Only rendered the appropriate page after confirming the user's authentication state
+- Implemented proper route guards that redirect authenticated users from the home page to the dashboard
 
 
 Made with Gaurav ♥️
